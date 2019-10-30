@@ -23,7 +23,7 @@
    and to retrieve Indy Module information. */
 
 /* Parameters */
-#define IPJ_EXAMPLE_DURATION_MS 1000
+#define IPJ_EXAMPLE_DURATION_MS 10000
 
 /* Allocate memory for iri device */
 static ipj_iri_device iri_device = { 0 };

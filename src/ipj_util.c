@@ -165,7 +165,8 @@ void ipj_util_print_epc(uint16_t* epc, int len, bool little_endian)
 
 {
 
-    int i;
+    int i, offset = 0;
+    char tagname[30] = "\0";
 
     for (i = 0; i < len; i++)
 
@@ -177,7 +178,8 @@ void ipj_util_print_epc(uint16_t* epc, int len, bool little_endian)
 
         {
 
-            printf("-");
+            strcat(tagname, "-");
+	    offset++;
 
         }
 
@@ -187,7 +189,8 @@ void ipj_util_print_epc(uint16_t* epc, int len, bool little_endian)
 
         {
 
-            printf("%04X", (((epc[i] & 0xFF00) >> 8) | ((epc[i] & 0xFF) << 8)));
+            sprintf(&tagname[offset], "%04X", (((epc[i] & 0xFF00) >> 8) | ((epc[i] & 0xFF) << 8)));
+	    offset += 4;
 
         }
 
@@ -195,13 +198,17 @@ void ipj_util_print_epc(uint16_t* epc, int len, bool little_endian)
 
         {
 
-            printf("%04X", epc[i]);
+            sprintf(&tagname[offset], "%04X", epc[i]);
+	    offset += 4;
 
         }
 
     }
 
-    printf("\n");
+    printf("%s\n", tagname);
+
+    // send to API ...
+    //system("curl http://149.165.168.142:3000/logTagData/");
 
 }
 
@@ -793,11 +800,15 @@ ipj_error ipj_util_tag_operation_report_handler(
         char isSame = true;
         for(char x = 0; x < 6; x++)
         {
-            if ( epc_last[x] != ((uint16_t*) tag_operation_report->tag.epc.bytes )[x] ) 
+            if ( epc_last[x] != ((uint16_t*) tag_operation_report->tag.epc.bytes )[x] )
                 isSame = false;
-        } 
+        }
 
-        if ( ! isSame )  // print it out
+        if ( isSame )
+            printf( "same.." );
+        else
+	{
+	    // print it out
             ipj_util_print_epc(
 
                 (uint16_t*) tag_operation_report->tag.epc.bytes,
@@ -805,25 +816,18 @@ ipj_error ipj_util_tag_operation_report_handler(
                 (int) tag_operation_report->tag.epc.size / 2,
 
                 true);
-        else 
-            printf( "same.." );   
-        
 
-    // make a copy of the epc
 
-    /*int x;
-    for(x = 1; x <= 10; x++)
-    {
-        printf("%d\t", x);
-    }*/
-   
+    	    // if not same, then make a copy of the epc
+            for(char x = 0; x < 6; x++)
+            {
+            	epc_last[x] = ((uint16_t*) tag_operation_report->tag.epc.bytes )[x];
+            }
+	}
 
-        
-
-        
     }
 
-	
+
 
     /* If tag report has antenna, print antenna */
 
