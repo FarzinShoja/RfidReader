@@ -40,7 +40,10 @@
 
 #include "platform.h"
 
+// Globals
 
+// Last EPC code
+uint16_t epc_last[6];
 
 static uint32_t ipj_stopped_flag;
 
@@ -786,31 +789,38 @@ ipj_error ipj_util_tag_operation_report_handler(
 
         //printf("%s ", (char*) iri_device->reader_identifier);
 
-        
+        // check if same as last
+        char isSame = true;
+        for(char x = 0; x < 6; x++)
+        {
+            if ( epc_last[x] != ((uint16_t*) tag_operation_report->tag.epc.bytes )[x] ) 
+                isSame = false;
+        } 
 
-        // make a copy of the epc
-
-    int x;
-    for(x = 1; x <= 10; x++)
-    {
-        printf("%d\t", x);
-    }
-}
-
-        
-
-        
-
-        // print it out
-
-        ipj_util_print_epc(
+        if ( ! isSame )  // print it out
+            ipj_util_print_epc(
 
                 (uint16_t*) tag_operation_report->tag.epc.bytes,
 
                 (int) tag_operation_report->tag.epc.size / 2,
 
                 true);
+        else 
+            printf( "same.." );   
+        
 
+    // make a copy of the epc
+
+    /*int x;
+    for(x = 1; x <= 10; x++)
+    {
+        printf("%d\t", x);
+    }*/
+   
+
+        
+
+        
     }
 
 	
