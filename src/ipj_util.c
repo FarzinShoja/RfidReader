@@ -167,6 +167,7 @@ void ipj_util_print_epc(uint16_t* epc, int len, bool little_endian)
 
     int i, offset = 0;
     char tagname[30] = "\0";
+    char curl[150] = "\0";
 
     for (i = 0; i < len; i++)
 
@@ -208,7 +209,8 @@ void ipj_util_print_epc(uint16_t* epc, int len, bool little_endian)
     printf("%s\n", tagname);
 
     // send to API ...
-    //system("curl http://149.165.168.142:3000/logTagData/");
+    sprintf(curl, "%s%s", "curl http://149.165.168.142:3000/logTagData/", tagname);
+    system(curl);
 
 }
 
@@ -808,6 +810,8 @@ ipj_error ipj_util_tag_operation_report_handler(
             printf( "same.." );
         else
 	{
+            printf( "\n" );
+
 	    // print it out
             ipj_util_print_epc(
 
