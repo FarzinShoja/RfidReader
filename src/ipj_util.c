@@ -209,7 +209,7 @@ void ipj_util_print_epc(uint16_t* epc, int len, bool little_endian)
     printf("%s\n", tagname);
 
     // send to API ...
-    sprintf(curl, "%s%s", "curl http://149.165.168.142:3000/logTagData/", tagname);
+    sprintf(curl, "%s%s", "curl http://149.165.168.142:3000/logtagdata/", tagname);
     system(curl);
 
 }
