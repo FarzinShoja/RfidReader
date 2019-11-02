@@ -166,6 +166,7 @@ void ipj_util_print_epc(uint16_t* epc, int len, bool little_endian)
 {
 
     int i, offset = 0;
+    char location[15] = "Parking Deck";
     char tagname[30] = "\0";
     char curl[150] = "\0";
 
@@ -209,7 +210,7 @@ void ipj_util_print_epc(uint16_t* epc, int len, bool little_endian)
     printf("%s\n", tagname);
 
     // send to API ...
-    sprintf(curl, "%s%s", "curl http://149.165.168.142:3000/logtagdata/", tagname);
+    sprintf(curl, "%s%s", "curl http://149.165.168.142:3000/logtagdata/", tagname, "@", location);
     system(curl);
 
 }
