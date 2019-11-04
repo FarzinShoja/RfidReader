@@ -166,7 +166,7 @@ void ipj_util_print_epc(uint16_t* epc, int len, bool little_endian)
 {
 
     int i, offset = 0;
-    char location[15] = "Parking Deck";
+    char location[15] = "Parking%20Deck";
     char tagname[30] = "\0";
     char curl[150] = "\0";
 
