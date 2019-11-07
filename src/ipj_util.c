@@ -848,6 +848,7 @@ ipj_error ipj_util_tag_operation_report_handler(
 {
 
     uint32_t i;
+    static uint32_t samecount;
 
 
 
@@ -879,10 +880,13 @@ ipj_error ipj_util_tag_operation_report_handler(
                 isSame = false;
         }
 
-        if ( isSame )
-            printf( "same.." );
-        else
+        if ( isSame ) {
+            printf( "\rsame (%d)      ", ++samecount );
+	    fflush(stdout);
+        } 
+	else
 	{
+	    samecount = 0;
             printf( "\n" );
 
 	    // print it out

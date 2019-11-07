@@ -65,6 +65,8 @@ int main(int argc, char* argv[])
     printf("-0x%08X", value);
     printf("\n\n");
 
+    fflush(stdout);
+
     IPJ_CLEAR_STRUCT(keyinfo);
 
     /* Verify that we can indeed write the ANTENNA_TX_POWER key */
