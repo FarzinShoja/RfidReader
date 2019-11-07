@@ -525,6 +525,78 @@ ipj_error ipj_util_perform_inventory(ipj_iri_device* iri_device, uint32_t timeou
 
 }
 
+//=======================================================
+
+ipj_error ipj_util_perform_inventory_infinite(ipj_iri_device* iri_device)
+
+{
+
+    ipj_error error;
+
+
+
+    /* Clear the stopped flag */
+
+    ipj_stopped_flag = 0;
+
+
+
+    error = ipj_start(iri_device, E_IPJ_ACTION_INVENTORY);
+
+    IPJ_UTIL_RETURN_ON_ERROR(error, "ipj_start E_IPJ_ACTION_INVENTORY");
+
+
+
+
+    /*  Perform receive until end time reached or stop received */
+
+    while (!ipj_stopped_flag)
+
+    {
+
+        /* Call ipj_receive to process tag reports  */
+
+        error = ipj_receive(iri_device);
+
+        IPJ_UTIL_RETURN_ON_ERROR(error, "ipj_receive");
+
+    }
+
+
+
+    /* Stop inventory if it is still running */
+
+    if (!ipj_stopped_flag)
+
+    {
+
+        error = ipj_stop(iri_device, E_IPJ_ACTION_INVENTORY);
+
+        IPJ_UTIL_RETURN_ON_ERROR(error, "ipj_stop");
+
+    }
+
+
+    /*  Collect the last few tags and look for the stop report */
+
+    while (!ipj_stopped_flag)
+
+    {
+
+        /* Call ipj_receive to process tag reports  */
+
+        error = ipj_receive(iri_device);
+
+        IPJ_UTIL_RETURN_ON_ERROR(error, "ipj_receive");
+
+    }
+
+
+
+    return E_IPJ_ERROR_SUCCESS;
+
+}
+//======================================================
 
 
 ipj_error ipj_util_test_command(ipj_iri_device* iri_device, ipj_test_id test_id,

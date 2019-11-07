@@ -55,6 +55,8 @@ ipj_error ipj_util_perform_inventory(
         ipj_iri_device* iri_device,
         uint32_t timeout_ms);
 
+ipj_error ipj_util_perform_inventory_infinite(ipj_iri_device* iri_device);
+
 ipj_error ipj_util_test_command(
         ipj_iri_device* iri_device,
         ipj_test_id test_id,

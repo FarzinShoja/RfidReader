@@ -83,8 +83,8 @@ int main(int argc, char* argv[])
     IPJ_UTIL_RETURN_ON_ERROR(error, "ipj_set_value E_IPJ_KEY_ANTENNA_TX_POWER");
 
     /* Start inventory */
-    error = ipj_util_perform_inventory(&iri_device, IPJ_EXAMPLE_DURATION_MS);
-    IPJ_UTIL_RETURN_ON_ERROR(error, "ipj_util_perform_inventory");
+    error = ipj_util_perform_inventory_infinite(&iri_device);
+    IPJ_UTIL_RETURN_ON_ERROR(error, "ipj_util_perform_inventory_infinite");
 
     /* Common example cleanup */
     error = ipj_util_cleanup(&iri_device);
